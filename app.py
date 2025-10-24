@@ -12,7 +12,7 @@ import time
 # Page config & header
 # ===============================================================
 st.set_page_config(page_title="Cell Nuclei Segmentation", layout="wide")
-st.markdown("<h1 style='text-align:center; font-size:32px; font-weight:bold;'> Cell Nuclei Segmentation using TransUNet</h1>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align:center; font-size:32px; font-weight:bold;'> Cell Nuclei Segmentation </h1>", unsafe_allow_html=True)
 st.markdown("<p style='text-align:center; font-size:18px;'>Upload one or more microscopy images to visualize the predicted nuclei masks.</p>", unsafe_allow_html=True)
 st.markdown("<hr>", unsafe_allow_html=True)
 
@@ -192,57 +192,6 @@ if uploaded_files:
             file_name="segmentation_results.zip",
             mime="application/zip"
         )
-
-    # Also allow individual segmentation buttons and download (optional UI variant)
-    # st.markdown("---")
-    # st.markdown("### 🔎 Individual image controls")
-    # for uploaded_file in uploaded_files:
-    #     uploaded_file.seek(0)
-    #     file_bytes = np.asarray(bytearray(uploaded_file.read()), dtype=np.uint8)
-    #     img = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
-    #     if img is None:
-    #         st.warning(f"⚠️ Could not read {uploaded_file.name}.")
-    #         continue
-
-    #     st.markdown(f"**{uploaded_file.name}**")
-    #     c1, c2 = st.columns([1, 3])
-    #     with c1:
-    #         if st.button(f"Segment {uploaded_file.name}", key=f"seg_{uploaded_file.name}"):
-    #             mask = predict_mask(model, img, target_size=(224,224))
-    #             cmap = getattr(cv2, f"COLORMAP_{colormap}")
-    #             mask_color = cv2.applyColorMap(mask.astype(np.uint8), cmap)
-    #             overlay = cv2.addWeighted(cv2.cvtColor(img, cv2.COLOR_BGR2RGB), alpha, mask_color, 1 - alpha, 0)
-
-    #             col1, col2, col3 = st.columns(3)
-    #             with col1: st.image(cv2.cvtColor(img, cv2.COLOR_BGR2RGB), width=350, caption="Original")
-    #             with col2: st.image(mask, width=350, caption="Predicted Mask")
-    #             with col3: st.image(overlay, width=350, caption="Overlay")
-
-    #             # add to zip (so batch zip accumulates these too)
-    #             zipf = zipfile.ZipFile(masks_zip_io, 'a', zipfile.ZIP_DEFLATED)
-    #             zipf.writestr(f"{uploaded_file.name.split('.')[0]}_mask.png", mask_to_bytes(mask))
-    #             overlay_bgr = cv2.cvtColor(overlay, cv2.COLOR_RGB2BGR)
-    #             _, overlay_buf = cv2.imencode(".png", overlay_bgr)
-    #             zipf.writestr(f"{uploaded_file.name.split('.')[0]}_overlay.png", overlay_buf.tobytes())
-    #             zipf.close()
-    #             masks_zip_io.seek(0)
-
-    #     with c2:
-    #         # small info and download
-    #         st.caption("Preview and download")
-    #         # tiny preview
-    #         st.image(cv2.cvtColor(img, cv2.COLOR_BGR2RGB), width=150)
-    #         if st.button(f"Download mask ({uploaded_file.name})", key=f"dl_{uploaded_file.name}"):
-    #             # ensure mask exists: run prediction again quickly (cheap)
-    #             mask = predict_mask(model, img, target_size=(224,224))
-    #             st.download_button(
-    #                 label=f"💾 Download {uploaded_file.name.split('.')[0]}_mask.png",
-    #                 data=mask_to_bytes(mask),
-    #                 file_name=f"{uploaded_file.name.split('.')[0]}_mask.png",
-    #                 mime="image/png",
-    #                 key=f"dlbtn_{uploaded_file.name}"
-    #             )
-
 # Footer
 st.markdown("<hr>", unsafe_allow_html=True)
 st.markdown("<p style='text-align:center; color:gray;'>Cell Nuclei Segmentation</p>", unsafe_allow_html=True)
